@@ -2,20 +2,16 @@ package com.puissance4;
 
 
 public class Interface {
-    
-    public static void main(String[] args) {
-        Test();
-    }
 
     static void Test(){
 
-        for (int i = 0; i < App.nbrLines; i++) {
+        for (int i = 0; i <= App.nbrLines-1; i++) {
             for (int j = 0; j < App.nbrColumns; j++) {
                 System.out.print("|");
-                if (App.arr().get(j) == null) {
+                if (App.arr().get(i).get(i) == " ") {
                     System.out.print(" ");
                 }else {
-                    System.out.print(App.arr().get(j));
+                    System.out.print(App.arr().get(j).get(i));
                 }
             }
             System.out.print("|");
