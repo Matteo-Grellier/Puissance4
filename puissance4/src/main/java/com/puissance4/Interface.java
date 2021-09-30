@@ -5,7 +5,7 @@ public class Interface {
 
     static void Test(){
 
-        for (int i = 0; i <= App.nbrLines-1; i++) {
+        for (int i = App.nbrLines-1; i >= 0 ; i--) {
             for (int j = 0; j < App.nbrColumns; j++) {
                 System.out.print("|");
                 if (App.arr().get(i).get(i) == " ") {

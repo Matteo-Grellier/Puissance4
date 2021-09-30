@@ -6,14 +6,11 @@ public class App {
 
     static int nbrColumns = 8;
     static int nbrLines = 6;
-    static Boolean verifEgalite = false;
-
 
     public static void main(String[] args)
     {
         Interface.Test();
         arr();
-        egalite();
     }
 
     static ArrayList<ArrayList<String>> arr(){
@@ -24,24 +21,8 @@ public class App {
                 colonnes.get(i).add(" ");
             }
         }
-        for (int i = 0; i < nbrColumns; i++) {
-            colonnes.get(i).set(0,"O");
-        }
         // System.out.println(colonnes);
         return colonnes; 
     }
-    static void egalite(){
-        for (int i = 0; i < nbrColumns; i++) {
-            if (arr().get(i).get(i) == " "){
-                break;
-            }else {
-               verifEgalite = true; 
-            }
-        
-        }
-        if (verifEgalite == true) {
-            System.out.println("Egalité");
-        }
-    }
-
+ 
 }
