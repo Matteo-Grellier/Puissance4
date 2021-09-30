@@ -6,23 +6,50 @@ public class App {
 
     static int nbrColumns = 8;
     static int nbrLines = 6;
+    static int nbrOfPlayer = 2;
+    static int nbrToWin = 4; //nombre de pièces alignés pour gagner
+
+    static boolean isEndGame = false;
+
+    static ArrayList<ArrayList<Piece>> colonnes =  new ArrayList<ArrayList<Piece>>();
+    private static ArrayList<Player> players = new ArrayList<Player>();
 
     public static void main(String[] args)
     {
-        Interface.Test();
-        arr();
+        setProperties();
+        round();
     }
 
-    static ArrayList<ArrayList<String>> arr(){
-        final ArrayList<ArrayList<String>> colonnes =  new ArrayList<ArrayList<String>>();        
+    public static void setProperties() {
         for (int i = 0; i < nbrColumns; i++) {
-            colonnes.add(new ArrayList<String>());
-            for (int j = 0; j < nbrLines; j++) {
-                colonnes.get(i).add(" ");
+            ArrayList<Piece> newColumn = new ArrayList<Piece>();
+            colonnes.add(newColumn);
+        }
+
+        for (int i = 0; i < nbrOfPlayer; i++) {
+            Player playerBuffer = new Player(ColorOfPieces.RED, "name"); //remplacer argument par variable qui est choisi avec l'interface.
+            players.add(playerBuffer);
+        }      
+    }
+
+    public static void round() {
+        while(!isEndGame) {
+
+            for(Player player : players) {
+                // players.get(i) ?
+                System.out.println("C'est au tour de " + player.name);
+                player.toAddPiece();
+                Interface.display();
+                
+                isEndGame = player.endGameTest();
+
+                if(isEndGame) {
+                    break;
+                }
             }
         }
-        // System.out.println(colonnes);
-        return colonnes; 
+
+        //quand on sort de la boucle, il faut regarder qui a gagné (ou s'il y a égalité)
     }
  
 }

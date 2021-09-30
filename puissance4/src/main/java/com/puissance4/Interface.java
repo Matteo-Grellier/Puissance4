@@ -1,21 +1,25 @@
 package com.puissance4;
 
+import java.util.ArrayList;
 
 public class Interface {
 
-    static void Test(){
+    static void display(){
 
         for (int i = App.nbrLines-1; i >= 0 ; i--) {
-            for (int j = 0; j < App.nbrColumns; j++) {
-                System.out.print("|");
-                if (App.arr().get(i).get(i) == " ") {
-                    System.out.print(" ");
-                }else {
-                    System.out.print(App.arr().get(j).get(i));
+            System.out.print("|");
+            for(ArrayList<Piece> column : App.colonnes) {                
+                if(i < column.size()) {  
+                    if(column.get(i).colorOfPiece == ColorOfPieces.GREEN) {
+                        System.out.print("X" + "|");
+                    } else {
+                        System.out.print("O" + "|");
+                    }
+                } else {
+                    System.out.print(" " + "|");
                 }
             }
-            System.out.print("|");
-            System.out.println("");
+            System.out.print("\n");
         }
         for (int i = 0; i < App.nbrColumns*2; i++) {
             System.out.print("#");
