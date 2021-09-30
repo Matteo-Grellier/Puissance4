@@ -6,6 +6,7 @@ public class App {
     static int nbrColumns = 8;
     static int nbrLines = 6;
     static int nbrOfPlayer = 2;
+    static int nbrToWin = 4; //nombre de pièces alignés pour gagner
 
     static boolean isEndGame = false;
 
@@ -38,7 +39,15 @@ public class App {
                 System.out.println("C'est au tour de " + player.name);
                 player.toAddPiece();
                 // Interface.display();
+                
+                isEndGame = player.endGameTest();
+
+                if(isEndGame) {
+                    break;
+                }
             }
         }
+
+        //quand on sort de la boucle, il faut regarder qui a gagné (ou s'il y a égalité)
     }
 }
