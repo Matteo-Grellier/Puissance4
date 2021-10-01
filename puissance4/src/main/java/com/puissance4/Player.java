@@ -1,6 +1,5 @@
 package com.puissance4;
 
-<<<<<<< HEAD
 
 import java.util.ArrayList;
 
@@ -102,8 +101,4 @@ public class Player {
 
         return bufferNbrRightPieces;
     }
-=======
-public class Player {
-    
->>>>>>> 6c0661e (Revert "Initialization of Player.java and Pieces.java")
 }
