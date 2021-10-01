@@ -2,6 +2,9 @@ package com.puissance4;
 
 import java.util.ArrayList;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 public class Interface {
 
     static void display(){
@@ -32,6 +35,19 @@ public class Interface {
             System.out.print("|");
         }
     }
-    
+    public static int getChoiceOfColumn() {
+        int choiceColumn = 0;
+
+        InputStreamReader isr = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(isr);
+
+        try {
+            String choice = br.readLine();
+            choiceColumn = Integer.parseInt(choice); 
+        } catch(IOException e) {
+            System.err.println("IOException : " + e.getMessage());
+        }
+        return choiceColumn;
+    }
 }
 

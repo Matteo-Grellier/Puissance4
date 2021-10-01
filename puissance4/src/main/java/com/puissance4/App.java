@@ -27,8 +27,10 @@ public class App {
         }
 
         for (int i = 0; i < nbrOfPlayer; i++) {
-            Player playerBuffer = new Player(ColorOfPieces.RED, "name"); //remplacer argument par variable qui est choisi avec l'interface.
-            players.add(playerBuffer);
+            Player firstPlayerBuffer = new Player(ColorOfPieces.RED, "Matt"); //remplacer argument par variable qui est choisi avec l'interface.
+            players.add(firstPlayerBuffer);
+            Player secondPlayerBuffer = new Player(ColorOfPieces.GREEN, "Math"); //remplacer argument par variable qui est choisi avec l'interface.
+            players.add(secondPlayerBuffer);
         }      
     }
 
@@ -48,8 +50,6 @@ public class App {
                 }
             }
         }
-
         //quand on sort de la boucle, il faut regarder qui a gagné (ou s'il y a égalité)
     }
- 
 }

@@ -1,5 +1,6 @@
 package com.puissance4;
 
+
 import java.util.ArrayList;
 
 enum ColorOfPieces {
@@ -13,7 +14,7 @@ public class Player {
     String name;
     
     boolean isWinner = false;
-
+    int bufferEquality = 0;
     private Piece lastPiece = null;
 
     public Player(ColorOfPieces teamColor, String name) {
@@ -21,10 +22,9 @@ public class Player {
         this.name = name;
     }
 
-    public void toAddPiece() {
-        int choosenColumn = 0; // fonction de l'interface qui return le choix du joueur
-        // int choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
-
+    public void toAddPiece() { 
+        int choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
+        System.out.println("test");
         if(App.colonnes.get(choosenColumn).size() <= App.nbrLines) {
             int lineIndex = (App.colonnes.get(choosenColumn).size());
             lastPiece = new Piece(this.teamColor, lineIndex, choosenColumn);
@@ -49,13 +49,25 @@ public class Player {
             return true;
         }
 
-        //egalité
+        // egalité
+            for (ArrayList<Piece> column : App.colonnes) {
+                if (column.size() >= App.nbrLines) {
+                    bufferEquality++;
+                    
+                }
+            }
+        System.out.println("egalité : "+bufferEquality);
+        if(bufferEquality == App.nbrColumns) {
+            System.out.println("true?");
+            return true;
+        }
 
-        //autre
-        return false;
+    //     //autre
+         return false;
 
     }
-
+    
+    
     public int checkDirection(int dirX, int dirY) {
 
         int bufferNbrRightPieces = 0;
