@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 public class App {
 
-    static int nbrColumns = 8;
-    static int nbrLines = 6;
+    static int nbrColumns = 4;
+    static int nbrLines = 2;
     static int nbrOfPlayer = 2;
     static int nbrToWin = 4; //nombre de pièces alignés pour gagner
 
     static boolean isEndGame = false;
 
     static ArrayList<ArrayList<Piece>> colonnes =  new ArrayList<ArrayList<Piece>>();
-    private static ArrayList<Player> players = new ArrayList<Player>();
+    static ArrayList<Player> players = new ArrayList<Player>();
 
     public static void main(String[] args)
     {
@@ -27,11 +27,13 @@ public class App {
         }
 
         for (int i = 0; i < nbrOfPlayer; i++) {
-            Player firstPlayerBuffer = new Player(ColorOfPieces.RED, "Matt"); //remplacer argument par variable qui est choisi avec l'interface.
+            Player firstPlayerBuffer = new Player(Interface.getChoiceOfName(),Interface.getChoiceOfColor()); //remplacer argument par variable qui est choisi avec l'interface.
             players.add(firstPlayerBuffer);
-            Player secondPlayerBuffer = new Player(ColorOfPieces.GREEN, "Math"); //remplacer argument par variable qui est choisi avec l'interface.
-            players.add(secondPlayerBuffer);
-        }      
+            // Player secondPlayerBuffer = new Player(ColorOfPieces.GREEN, "Math"); //remplacer argument par variable qui est choisi avec l'interface.
+            // players.add(secondPlayerBuffer);
+        } 
+    
+        Interface.display();
     }
 
     public static void round() {

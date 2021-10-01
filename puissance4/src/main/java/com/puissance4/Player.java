@@ -10,22 +10,20 @@ enum ColorOfPieces {
 
 public class Player {
 
-    private ColorOfPieces teamColor;
+    ColorOfPieces teamColor;
     String name;
     
     boolean isWinner = false;
-    int bufferEquality = 0;
     private Piece lastPiece = null;
 
-    public Player(ColorOfPieces teamColor, String name) {
+    public Player(String name, ColorOfPieces teamColor) {
         this.teamColor = teamColor;
         this.name = name;
     }
 
     public void toAddPiece() { 
         int choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
-        System.out.println("test");
-        if(App.colonnes.get(choosenColumn).size() <= App.nbrLines) {
+        if(App.colonnes.get(choosenColumn).size() < App.nbrLines) {
             int lineIndex = (App.colonnes.get(choosenColumn).size());
             lastPiece = new Piece(this.teamColor, lineIndex, choosenColumn);
             App.colonnes.get(choosenColumn).add(lastPiece);
@@ -39,26 +37,36 @@ public class Player {
 
         //victoire 
 
+        boolean isVictory = false;
+
         if(checkDirection(1, 0) + checkDirection(-1, 0) - 1 >= App.nbrToWin) { //horizontal
-            return true;
+            isVictory = true;
         } else if(checkDirection(0, -1) >= App.nbrToWin) { //vertical
-            return true;
+            isVictory = true;
         } else if(checkDirection(1,1) + checkDirection(-1,-1) - 1 >= App.nbrToWin) { //diagonale (bas-gauche vers haut-droit)
-            return true;
+            isVictory = true;
         } else if(checkDirection(-1,1) + checkDirection(1,-1) - 1 >= App.nbrToWin) { //diagonale (bas-droit vers haut-gauche)
-            return true;
+            isVictory = true;
+        }
+
+        if(isVictory) {
+            Interface.displayEndGameState(this);
+            return isVictory;
         }
 
         // egalité
-            for (ArrayList<Piece> column : App.colonnes) {
-                if (column.size() >= App.nbrLines) {
-                    bufferEquality++;
-                    
-                }
+
+        int bufferEquality = 0;
+
+        for (ArrayList<Piece> column : App.colonnes) {
+            if (column.size() >= App.nbrLines) {
+                bufferEquality++;
+                
             }
-        System.out.println("egalité : "+bufferEquality);
+        }
         if(bufferEquality == App.nbrColumns) {
-            System.out.println("true?");
+            
+            Interface.displayEndGameState();
             return true;
         }
 
