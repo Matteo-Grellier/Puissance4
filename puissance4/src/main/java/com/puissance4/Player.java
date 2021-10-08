@@ -50,7 +50,7 @@ public class Player {
         }
 
         if(isVictory) {
-            Interface.displayEndGameState(this);
+            Interface.displayEndGameState(this); //On affiche le gagnant.
             return isVictory;
         }
 
@@ -58,6 +58,7 @@ public class Player {
 
         int bufferEquality = 0;
 
+        // vérification pour toutes les colonnes : si la taille de la colonne est égale au nombre maximal (nbr de ligne).
         for (ArrayList<Piece> column : App.colonnes) {
             if (column.size() >= App.nbrLines) {
                 bufferEquality++;
@@ -66,16 +67,16 @@ public class Player {
         }
         if(bufferEquality == App.nbrColumns) {
             
-            Interface.displayEndGameState();
+            Interface.displayEndGameState(); //On affiche l'égalité.
             return true;
         }
 
-    //     //autre
-         return false;
+        //autre
+        return false;
 
     }
     
-    
+    //Méthode permettant de vérifier le nombre de pièce aligné (de la même couleur), pour une direction donnée.
     public int checkDirection(int dirX, int dirY) {
 
         int bufferNbrRightPieces = 0;

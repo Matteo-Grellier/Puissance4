@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-// import java.lang.Enum;
+
 public class Interface {
 
+    //Affichage de la zone de jeu.
     static void display(){
 
         for (int i = App.nbrLines-1; i >= 0 ; i--) {
@@ -37,6 +38,8 @@ public class Interface {
         }
         System.out.print("\n");
     }
+
+    //Choix de la colonne
     public static int getChoiceOfColumn() {
         int choiceColumn = 0;
 
@@ -52,6 +55,7 @@ public class Interface {
         return choiceColumn;
     }
 
+    //Choix du nom.
     public static String getChoiceOfName() {
 
         System.out.println("Veuillez entrer votre nom : ");
@@ -70,23 +74,15 @@ public class Interface {
         return "default_name";
     }
 
+    //Choix de la couleur.
     public static ColorOfPieces getChoiceOfColor() {
 
         ColorOfPieces colorOfTeamPlayer = null;
 
         System.out.println("Veuillez choisir une couleur parmis : ");
 
+        //Affichage du menu de choix de couleur.
         for(int i = 0; i < ColorOfPieces.values().length; i++) {
-
-            // for(Player player : App.players) {
-            //     if(ColorOfPieces.values()[i] != player.teamColor) {
-            //         System.out.println(i + ". " + ColorOfPieces.values()[i]);
-            //     }
-            // }
-            // if(App.players.size() > j && ColorOfPieces.values()[i] != App.players.get(j).teamColor) {
-            //     System.out.println(i + ". " + ColorOfPieces.values()[i]);
-            // }
-
             System.out.println(i + ". " + ColorOfPieces.values()[i]);
         }
 
@@ -98,6 +94,7 @@ public class Interface {
             int choiceInt = Integer.parseInt(choice);
             colorOfTeamPlayer = ColorOfPieces.values()[choiceInt];
 
+            //Vérification de la couleur choisi : si elle est déjà prise, alors relancer la fonction de demande.
             for(Player player : App.players) {
                 if(player.teamColor == colorOfTeamPlayer) {
                     System.out.println("Couleur déjà choisi !");
@@ -112,10 +109,12 @@ public class Interface {
         return colorOfTeamPlayer;
     }
 
+    //Fonction de l'état de fin du jeu : Victoire.
     public static void displayEndGameState(Player winner) {
         System.out.println("The winner is " + winner.name + " !");
     }
 
+    //Fonction de l'état de fin du jeu : Egalité.
     public static void displayEndGameState() {
         System.out.println("Il y a une égalité...");
     }
