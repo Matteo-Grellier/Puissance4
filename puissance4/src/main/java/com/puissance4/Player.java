@@ -1,6 +1,7 @@
 package com.puissance4;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 enum ColorOfPieces {
@@ -22,7 +23,24 @@ public class Player {
     }
 
     public void toAddPiece() { 
-        int choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
+
+        int choosenColumn = 0;
+
+        if(App.isNetworking && App.myPlayer.equals(this)) {
+            choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
+            
+            try {
+                Communicator.comm.write(Integer.toString(choosenColumn));
+            } catch(IOException e) {
+                System.err.println("IOException : " + e.getMessage());
+            }
+
+        } else if (App.isNetworking && !App.myPlayer.equals(this)) {
+            choosenColumn = Integer.parseInt(Communicator.comm.read());
+        } else {
+            choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
+        }
+
         if(App.colonnes.get(choosenColumn).size() < App.nbrLines) {
             int lineIndex = (App.colonnes.get(choosenColumn).size());
             lastPiece = new Piece(this.teamColor, lineIndex, choosenColumn);
