@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class App {
 
-    static int nbrColumns = 4;
-    static int nbrLines = 2;
+    static int nbrColumns = 6;
+    static int nbrLines = 4;
     static int nbrOfPlayer = 2;
     static int nbrToWin = 4; //nombre de pièces alignés pour gagner
 
@@ -33,7 +33,6 @@ public class App {
             // players.add(secondPlayerBuffer);
         } 
     
-        Interface.display();
     }
 
     public static void round() {
@@ -42,8 +41,7 @@ public class App {
             for(Player player : players) {
                 // players.get(i) ?
                 System.out.println("C'est au tour de " + player.name);
-                player.toAddPiece();
-                Interface.display();
+                // player.toAddPiece();
                 
                 isEndGame = player.endGameTest();
 

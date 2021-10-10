@@ -21,7 +21,7 @@ public class Player {
         this.name = name;
     }
 
-    public void toAddPiece() { 
+/*     public void toAddPiece() { 
         int choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
         if(App.colonnes.get(choosenColumn).size() < App.nbrLines) {
             int lineIndex = (App.colonnes.get(choosenColumn).size());
@@ -31,7 +31,7 @@ public class Player {
             System.out.println("La colonne est deja pleine, choisissez-en une autre.");
             toAddPiece();
         }
-    }
+    } */
 
     public boolean endGameTest() {
 
