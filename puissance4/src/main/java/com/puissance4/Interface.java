@@ -25,16 +25,14 @@ public class Interface extends Application {
         groupCircles.toBack();
         groupButtons.getChildren().add(groupCircles);
         Scene scene = new Scene(groupButtons,720 , 640);
-        int initialX = 80;
+        int initialX = 70;
         
         int circlePosX = 130;
         for (int i = 1; i <= App.nbrColumns; i++) {
             Button button = new Button();
-            Scale bouton = new Scale(10,10);
-            button.minWidth(5);
-            button.maxWidth(20);
-            bouton.setX(5);
-            bouton.setY(30);
+            Scale bouton = new Scale(5,10);
+            bouton.setX(7);
+            bouton.setY(100);
             
             button.setLayoutX(0*i + initialX);
             initialX += 130;
@@ -45,15 +43,17 @@ public class Interface extends Application {
             for (int j = 2; j <= App.nbrLines; j++) {
                 System.out.println(circlePosX);
                 Circle circle = new Circle(circlePosX, 130*j-60, 50);
-                circle.setStroke(Color.BLACK);
+                circle.setStroke(Color.WHITE);
+                circle.setFill(Color.WHITE);
                 circle.toBack();
                 groupCircles.getChildren().add(circle);
             }
             circlePosX += 130;
             Circle circle = new Circle(130*i, 70, 50);
             
-            scene.setFill(Color.PURPLE);
-            circle.setStroke(Color.BLACK);
+            scene.setFill(Color.BLUEVIOLET);
+            circle.setStroke(Color.WHITE);
+            circle.setFill(Color.WHITE);
             groupCircles.getChildren().add(circle);
         }
         int width = App.nbrColumns * 150;
@@ -63,8 +63,6 @@ public class Interface extends Application {
         window.setHeight(height);
         window.setScene(scene);
         window.show();
-        
-
     }
 }
 
