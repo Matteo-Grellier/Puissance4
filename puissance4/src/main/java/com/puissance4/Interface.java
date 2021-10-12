@@ -1,42 +1,72 @@
 package com.puissance4;
 
-import java.util.ArrayList;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Interface {
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.transform.Scale;
+// import java.lang.Enum;
+import javafx.stage.Stage;
 
-    //Affichage de la zone de jeu.
-    static void display(){
+public class Interface extends Application {
+    public static void main(String[] args){
+        launch(args);
+    }
 
-        for (int i = App.nbrLines-1; i >= 0 ; i--) {
-            System.out.print("|");
-            for(ArrayList<Piece> column : App.colonnes) {                
-                if(i < column.size()) {  
-                    if(column.get(i).colorOfPiece == ColorOfPieces.GREEN) {
-                        System.out.print("X" + "|");
-                    } else {
-                        System.out.print("O" + "|");
-                    }
-                } else {
-                    System.out.print(" " + "|");
-                }
-            }
-            System.out.print("\n");
-        }
-        for (int i = 0; i < App.nbrColumns*2+1; i++) {
-            System.out.print("#");
-        }
-        System.out.println("");
-        System.out.print("|");
-        for (int i = 0; i < App.nbrColumns; i++) {
+    @Override
+    public void start(Stage window) throws Exception {
+        Group groupButtons = new Group();
+        groupButtons.toFront();
+        Group groupCircles = new Group();
+        groupCircles.toBack();
+        groupButtons.getChildren().add(groupCircles);
+        Scene scene = new Scene(groupButtons,720 , 640);
+        int initialX = 70;
+        
+        int circlePosX = 130;
+        for (int i = 1; i <= App.nbrColumns; i++) {
+            Button button = new Button();
+            Scale bouton = new Scale(5,10);
+            bouton.setX(7);
+            bouton.setY(100);
             
-            System.out.print(i);
-            System.out.print("|");
+            button.setLayoutX(0*i + initialX);
+            initialX += 130;
+            button.getTransforms().add(bouton);
+            groupButtons.getChildren().add(button);
+            button.toFront();
+            groupButtons.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            for (int j = 2; j <= App.nbrLines; j++) {
+                System.out.println(circlePosX);
+                Circle circle = new Circle(circlePosX, 130*j-60, 50);
+                circle.setStroke(Color.WHITE);
+                circle.setFill(Color.WHITE);
+                circle.toBack();
+                groupCircles.getChildren().add(circle);
+            }
+            circlePosX += 130;
+            Circle circle = new Circle(130*i, 70, 50);
+            
+            scene.setFill(Color.BLUEVIOLET);
+            circle.setStroke(Color.WHITE);
+            circle.setFill(Color.WHITE);
+            groupCircles.getChildren().add(circle);
         }
-        System.out.print("\n");
+        int width = App.nbrColumns * 150;
+        int height = App.nbrLines * 150;
+        
+        window.setWidth(width);
+        window.setHeight(height);
+        window.setScene(scene);
+        window.show();
     }
 
     //fonction permettant de demander la colonne que veut le joueur
@@ -153,17 +183,17 @@ public class Interface {
         return "localhost";
     }
 
-    //Fonction de l'état de fin du jeu : Victoire.
-    public static void displayEndGameState(Player winner) {
-        Interface.display();
-        System.out.println("The winner is " + winner.name + " !");
-    }
+    // //Fonction de l'état de fin du jeu : Victoire.
+    // public static void displayEndGameState(Player winner) {
+    //     Interface.display();
+    //     System.out.println("The winner is " + winner.name + " !");
+    // }
 
-    //Fonction de l'état de fin du jeu : Egalité.
-    public static void displayEndGameState() {
-        Interface.display();
-        System.out.println("Il y a une égalité...");
-    }
+    // //Fonction de l'état de fin du jeu : Egalité.
+    // public static void displayEndGameState() {
+    //     Interface.display();
+    //     System.out.println("Il y a une égalité...");
+    // }
 
     
     //fonction permettant de demander si la partie se fera en local ou en réseau.

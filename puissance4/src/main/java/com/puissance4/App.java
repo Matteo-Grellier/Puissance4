@@ -179,7 +179,7 @@ public class App {
 
             for(Player player : players) { //tour par tour pour les joueurs
                 //affichage
-                Interface.display(); 
+                // Interface.display(); 
                 System.out.println("C'est au tour de " + player.name);
 
                 //si c'est le premier tour (ne rentrera que le joueur Client)

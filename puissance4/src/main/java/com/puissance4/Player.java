@@ -77,7 +77,7 @@ public class Player {
         }
 
         if(isVictory) {
-            Interface.displayEndGameState(this); //On affiche le gagnant.
+            // Interface.displayEndGameState(this); //On affiche le gagnant.
             return isVictory;
         }
 
@@ -93,7 +93,7 @@ public class Player {
         }
 
         if(bufferEquality == App.nbrColumns) { //Si la grille est remplie.        
-            Interface.displayEndGameState(); //On affiche l'égalité.
+            // Interface.displayEndGameState(); //On affiche l'égalité.
             return true;
         }
 
