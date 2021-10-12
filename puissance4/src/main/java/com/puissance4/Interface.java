@@ -37,7 +37,38 @@ public class Interface {
         }
         System.out.print("\n");
     }
-    public static int getChoiceOfColumn() {
+    
+    // public static int getChoiceOfColumn() {
+
+    //     System.out.println("Choisissez la colonne :");
+
+    //     int choiceColumn = 0;
+
+    //     InputStreamReader isr = new InputStreamReader(System.in);
+    //     BufferedReader br = new BufferedReader(isr);
+
+    //     try {
+    //         String choice = br.readLine();
+    //         choiceColumn = Integer.parseInt(choice); 
+    //     } catch(IOException e) {
+    //         System.err.println("IOException : " + e.getMessage());
+            
+    //     } catch(NumberFormatException e) {        
+    //         System.err.println("NumberFormatException : " + e.getMessage());
+            
+    //         System.out.println("Veuillez entrer un nombre valide");
+    //         return getChoiceOfColumn();
+    //     }
+
+    //     if(choiceColumn < App.nbrColumns && choiceColumn >= 0) { //vérification de si le nombre est bien une colonne
+    //         return choiceColumn;
+    //     } else {
+    //         System.out.println("Veuillez entrer un nombre valide");
+    //         return getChoiceOfColumn();
+    //     }
+    // }
+
+    public static String getChoiceOfColumn() {
 
         System.out.println("Choisissez la colonne :");
 
@@ -52,11 +83,19 @@ public class Interface {
         } catch(IOException e) {
             System.err.println("IOException : " + e.getMessage());
             
-            //voir si ca marche ?
+        } catch(NumberFormatException e) {        
+            System.err.println("NumberFormatException : " + e.getMessage());
+            
             System.out.println("Veuillez entrer un nombre valide");
             return getChoiceOfColumn();
         }
-        return choiceColumn;
+
+        if(choiceColumn < App.nbrColumns && choiceColumn >= 0) { //vérification de si le nombre est bien une colonne
+            return "Turn " + Integer.toString(choiceColumn);
+        } else {
+            System.out.println("Veuillez entrer un nombre valide");
+            return getChoiceOfColumn();
+        }
     }
 
     public static String getChoiceOfName() {
@@ -137,10 +176,12 @@ public class Interface {
     }
 
     public static void displayEndGameState(Player winner) {
+        Interface.display();
         System.out.println("The winner is " + winner.name + " !");
     }
 
     public static void displayEndGameState() {
+        Interface.display();
         System.out.println("Il y a une égalité...");
     }
 
@@ -165,6 +206,32 @@ public class Interface {
                 return true;
             } else {
                 return isNetwork();
+            }
+
+        } catch(IOException e) {
+            System.err.println("IOException" + e.getMessage());
+        }
+
+        return false;
+    }
+
+    public static boolean isSameImplementation() {
+        System.out.println("Jouez-vous sur la meme version/implementation du jeu que votre adversaire ?");
+        System.out.println("| 1. oui | 2. non |");
+        System.out.println("Choose a number ;)");
+
+        InputStreamReader isr = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(isr);
+
+        try{
+            String choice = br.readLine();
+
+            if(choice.equals("1")) {
+                return true;
+            } else if(choice.equals("2")) {
+                return false;
+            } else {
+                return isSameImplementation();
             }
 
         } catch(IOException e) {

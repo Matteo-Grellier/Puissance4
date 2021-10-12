@@ -2,11 +2,12 @@ package com.puissance4;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class App {
 
-    static int nbrColumns = 4;
-    static int nbrLines = 2;
+    static int nbrColumns = 8;
+    static int nbrLines = 6;
     static int nbrOfPlayer = 2;
     static int nbrToWin = 4; //nombre de pièces alignés pour gagner
 
@@ -21,6 +22,8 @@ public class App {
     public static void main(String[] args)
     {
 
+        setGrid();
+
         if(Interface.isNetwork()){
 
             //definir un communicator
@@ -33,33 +36,62 @@ public class App {
         } else {
             isNetworking = false;
             setPlayers();
+            randomStartingPlayer(generateRandomNbr());
         }
 
-        // setProperties();
-        setGrid();
-        // Interface.display();
         round();
     }
 
     public static void setupNetworkGame() {
+
+        boolean isSameImplementation = Interface.isSameImplementation();
         
         if(Communicator.isServing()) {
             Communicator.comm.accept();
-            readPlayerProperties();
-            writePlayerProperties();
+
+            if(isSameImplementation) {
+                readPlayerProperties();
+                writePlayerProperties();
+            } else {
+                setPlayers("Joueur client", ColorOfPieces.GREEN);
+                myPlayer = setPlayers("Joueur serveur (vous)", ColorOfPieces.RED);
+            }
+
+            randomStartingPlayer(generateRandomNbr());
+
         } else {
 
             try {
                 Communicator.comm.connect(Interface.getChoiceOfAdress()); //connexion à une adresse donnée.
-                writePlayerProperties();
-                readPlayerProperties();
+
+                if(isSameImplementation) {
+                    writePlayerProperties();
+                    readPlayerProperties();
+                } else {
+                    myPlayer = setPlayers("Joueur client (vous)", ColorOfPieces.RED);
+                    setPlayers("Joueur serveur", ColorOfPieces.GREEN);
+                }
+
+                String forRandomStarting = Communicator.comm.read();
+
+                if(!forRandomStarting.equals("your turn") && !forRandomStarting.equals("Your turn")) {
+                    players.get(1).toAddPiece(forRandomStarting);
+                }
+
+                // //vérification que c'est bien un nombre
+                // int randomNbr = Integer.parseInt(Communicator.comm.read()); 
+
+                // randomStartingPlayer(randomNbr);
 
             } catch(IOException e) {
                 System.err.println("error" + e.getMessage());
-            }
+            } 
+            // catch(NumberFormatException e) {
+            //     System.err.println("error" + e.getMessage());
+            // }
         }
     }
-
+    
     public static void setGrid() {
         for (int i = 0; i < nbrColumns; i++) {
             ArrayList<Piece> newColumn = new ArrayList<Piece>();
@@ -80,6 +112,30 @@ public class App {
         players.add(playerBuffer);
 
         return playerBuffer;
+    }
+
+    public static void randomStartingPlayer(int randomNbr) {
+
+        Collections.swap(players, randomNbr, 0);
+        
+        if(isNetworking) {
+            try {
+                if(randomNbr == 0) {
+                    Communicator.comm.write("your turn");
+                } else {
+                    players.get(1).toAddPiece(players.get(1).getChoosenColumn());
+                }
+
+            } catch(IOException e) {
+                System.err.println("IOException : " + e.getMessage());
+            } 
+        }
+    }
+
+    public static int generateRandomNbr() {
+        int randomNbr = (int)(Math.random() * (nbrOfPlayer));
+
+        return randomNbr;
     }
 
     public static void readPlayerProperties() {
@@ -115,15 +171,18 @@ public class App {
                 // players.get(i) ?
                 Interface.display();
                 System.out.println("C'est au tour de " + player.name);
-                player.toAddPiece();
+                player.toAddPiece(player.getChoosenColumn());
 
                 isEndGame = player.endGameTest();
 
                 if(isEndGame) {
+                    // Interface.display();
+                    Communicator.comm.close();
                     break;
                 }
             }
         }
         //quand on sort de la boucle, il faut regarder qui a gagné (ou s'il y a égalité)
     }
+    
 }

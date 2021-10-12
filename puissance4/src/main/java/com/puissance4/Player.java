@@ -22,32 +22,101 @@ public class Player {
         this.name = name;
     }
 
-    public void toAddPiece() { 
+    // public void toAddPiece() { 
 
-        int choosenColumn = 0;
+    //     int choosenColumn = 0;
 
+    //     if(App.isNetworking && App.myPlayer.equals(this)) {
+    //         choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
+            
+    //         try {
+    //             Communicator.comm.write(Integer.toString(choosenColumn));
+    //         } catch(IOException e) {
+    //             System.err.println("IOException : " + e.getMessage());
+    //         }
+
+    //     } else if (App.isNetworking && !App.myPlayer.equals(this)) {
+    //         choosenColumn = Integer.parseInt(Communicator.comm.read());
+    //     } else {
+    //         choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
+    //     }
+
+    //     if(App.colonnes.get(choosenColumn).size() < App.nbrLines) {
+    //         int lineIndex = (App.colonnes.get(choosenColumn).size());
+    //         lastPiece = new Piece(this.teamColor, lineIndex, choosenColumn);
+    //         App.colonnes.get(choosenColumn).add(lastPiece);
+    //     } else {
+    //         System.out.println("La colonne est deja pleine, choisissez-en une autre.");
+    //         toAddPiece();
+    //     }
+    // }
+
+    public String getChoosenColumn() {
+
+        String choosenColumn;
+        
         if(App.isNetworking && App.myPlayer.equals(this)) {
             choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
             
             try {
-                Communicator.comm.write(Integer.toString(choosenColumn));
+                Communicator.comm.write(choosenColumn);
             } catch(IOException e) {
                 System.err.println("IOException : " + e.getMessage());
             }
 
         } else if (App.isNetworking && !App.myPlayer.equals(this)) {
-            choosenColumn = Integer.parseInt(Communicator.comm.read());
+            choosenColumn = Communicator.comm.read();
         } else {
             choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
         }
 
-        if(App.colonnes.get(choosenColumn).size() < App.nbrLines) {
-            int lineIndex = (App.colonnes.get(choosenColumn).size());
-            lastPiece = new Piece(this.teamColor, lineIndex, choosenColumn);
-            App.colonnes.get(choosenColumn).add(lastPiece);
+        return choosenColumn;
+    }
+
+    // public void toAddPiece() { 
+
+    //     String choosenColumn;
+
+    //     if(App.isNetworking && App.myPlayer.equals(this)) {
+    //         choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
+            
+    //         try {
+    //             Communicator.comm.write(choosenColumn);
+    //         } catch(IOException e) {
+    //             System.err.println("IOException : " + e.getMessage());
+    //         }
+
+    //     } else if (App.isNetworking && !App.myPlayer.equals(this)) {
+    //         choosenColumn = Communicator.comm.read();
+    //     } else {
+    //         choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
+    //     }
+
+    //     int column = Integer.parseInt(String.valueOf(choosenColumn.charAt(5))); // à la sixième valeur (soit 5 ici) il y a le numéro
+
+    //     if(App.colonnes.get(column).size() < App.nbrLines) {
+    //         int lineIndex = (App.colonnes.get(column).size());
+    //         lastPiece = new Piece(this.teamColor, lineIndex, column);
+    //         App.colonnes.get(column).add(lastPiece);
+    //     } else {
+    //         System.out.println("La colonne est deja pleine, choisissez-en une autre.");
+    //         toAddPiece();
+    //     }
+    // }
+
+    public void toAddPiece(String choosenColumn) {
+
+        System.out.println(choosenColumn);
+
+        int column = Integer.parseInt(String.valueOf(choosenColumn.charAt(5))); // à la sixième valeur (soit 5 ici) il y a le numéro
+
+        if(App.colonnes.get(column).size() < App.nbrLines) {
+            int lineIndex = (App.colonnes.get(column).size());
+            lastPiece = new Piece(this.teamColor, lineIndex, column);
+            App.colonnes.get(column).add(lastPiece);
         } else {
             System.out.println("La colonne est deja pleine, choisissez-en une autre.");
-            toAddPiece();
+            toAddPiece(getChoosenColumn());
         }
     }
 
