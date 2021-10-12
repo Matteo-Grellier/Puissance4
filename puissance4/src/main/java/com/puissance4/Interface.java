@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-// import java.lang.Enum;
+
 public class Interface {
 
     static void display(){
@@ -37,36 +37,6 @@ public class Interface {
         }
         System.out.print("\n");
     }
-    
-    // public static int getChoiceOfColumn() {
-
-    //     System.out.println("Choisissez la colonne :");
-
-    //     int choiceColumn = 0;
-
-    //     InputStreamReader isr = new InputStreamReader(System.in);
-    //     BufferedReader br = new BufferedReader(isr);
-
-    //     try {
-    //         String choice = br.readLine();
-    //         choiceColumn = Integer.parseInt(choice); 
-    //     } catch(IOException e) {
-    //         System.err.println("IOException : " + e.getMessage());
-            
-    //     } catch(NumberFormatException e) {        
-    //         System.err.println("NumberFormatException : " + e.getMessage());
-            
-    //         System.out.println("Veuillez entrer un nombre valide");
-    //         return getChoiceOfColumn();
-    //     }
-
-    //     if(choiceColumn < App.nbrColumns && choiceColumn >= 0) { //vérification de si le nombre est bien une colonne
-    //         return choiceColumn;
-    //     } else {
-    //         System.out.println("Veuillez entrer un nombre valide");
-    //         return getChoiceOfColumn();
-    //     }
-    // }
 
     public static String getChoiceOfColumn() {
 
@@ -124,15 +94,6 @@ public class Interface {
 
         for(int i = 0; i < ColorOfPieces.values().length; i++) {
 
-            // for(Player player : App.players) {
-            //     if(ColorOfPieces.values()[i] != player.teamColor) {
-            //         System.out.println(i + ". " + ColorOfPieces.values()[i]);
-            //     }
-            // }
-            // if(App.players.size() > j && ColorOfPieces.values()[i] != App.players.get(j).teamColor) {
-            //     System.out.println(i + ". " + ColorOfPieces.values()[i]);
-            // }
-
             System.out.println(i + ". " + ColorOfPieces.values()[i]);
         }
 
@@ -142,7 +103,14 @@ public class Interface {
         try {
             String choice = br.readLine();
             int choiceInt = Integer.parseInt(choice);
-            colorOfTeamPlayer = ColorOfPieces.values()[choiceInt];
+            
+            // Si le numéro en
+            if(choiceInt >= 0 && choiceInt < ColorOfPieces.values().length) {
+                colorOfTeamPlayer = ColorOfPieces.values()[choiceInt];
+            } else {
+                System.out.println("Mauvais choix !");
+                return getChoiceOfColor();
+            }
 
             for(Player player : App.players) {
                 if(player.teamColor == colorOfTeamPlayer) {
@@ -153,7 +121,11 @@ public class Interface {
             
         } catch(IOException e) {
             System.err.println("IOException : " + e.getMessage());
-        }
+            
+        } catch(NumberFormatException e) {
+            System.err.println("Nombre invalide !");
+            return getChoiceOfColor();
+        }  
 
         return colorOfTeamPlayer;
     }
@@ -240,8 +212,6 @@ public class Interface {
 
         return false;
     }
-
-    // public static boolean isServing();
 
     public static String serverOrClient() {
         System.out.println("Comment voulez-vous jouer ?");

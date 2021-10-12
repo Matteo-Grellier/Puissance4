@@ -37,7 +37,8 @@ public class App {
         } else {
             isNetworking = false;
             setPlayers();
-            randomStartingPlayer(generateRandomNbr());
+            setStartingPlayer(generateRandomNbr());
+            firstRoundState = "first round finished";
         }
 
         round();
@@ -74,13 +75,7 @@ public class App {
                     setPlayers("Joueur serveur", ColorOfPieces.GREEN);
                 }
 
-                // String firstRoundState = Communicator.comm.read();
-
                 firstRoundState = Communicator.comm.read();
-
-                // if(!firstRoundState.equals("your turn") && !firstRoundState.equals("Your turn")) {
-                //     players.get(1).toAddPiece(firstRoundState);
-                // }
                 
                 if (firstRoundState.equals("your turn")) {
                     setStartingPlayer(0);
@@ -88,17 +83,9 @@ public class App {
                     setStartingPlayer(1);
                 }
 
-                // //vérification que c'est bien un nombre
-                // int randomNbr = Integer.parseInt(Communicator.comm.read()); 
-
-                // randomStartingPlayer(randomNbr);
-
             } catch(IOException e) {
                 System.err.println("error" + e.getMessage());
             } 
-            // catch(NumberFormatException e) {
-            //     System.err.println("error" + e.getMessage());
-            // }
         }
     }
     
@@ -132,10 +119,7 @@ public class App {
             try {
                 if(randomNbr == 0) {
                     Communicator.comm.write("your turn");
-                } else {
-                    // myPlayer = players.get(randomNbr);
-                    // players.get(randomNbr).toAddPiece(players.get(randomNbr).getChoosenColumn());
-                }
+                } 
 
                 firstRoundState = "first round finished";
 
@@ -185,14 +169,8 @@ public class App {
         while(!isEndGame) {
 
             for(Player player : players) {
-                // players.get(i) ?
                 Interface.display();
                 System.out.println("C'est au tour de " + player.name);
-
-                // if(!firstRoundState.equals("your turn") && !firstRoundState.equals("Your turn")) {
-                //     players.get(1).toAddPiece(firstRoundState);
-                //     firstRoundState = "your turn";
-                // } 
 
                 if(!firstRoundState.equals("first round finished")) {
                     firstRound(player);
@@ -200,18 +178,17 @@ public class App {
                     player.toAddPiece(player.getChoosenColumn());
                 }
 
-                // player.toAddPiece(player.getChoosenColumn());
-
                 isEndGame = player.endGameTest();
 
                 if(isEndGame) {
-                    // Interface.display();
-                    Communicator.comm.close();
+                    if(isNetworking) {
+                        Communicator.comm.close();
+                    }
+
                     break;
                 }
             }
         }
-        //quand on sort de la boucle, il faut regarder qui a gagné (ou s'il y a égalité)
     }
 
     public static void firstRound(Player player) {
