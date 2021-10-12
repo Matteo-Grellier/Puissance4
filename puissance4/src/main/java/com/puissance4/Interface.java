@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 
 public class Interface {
 
+    //Affichage de la zone de jeu.
     static void display(){
 
         for (int i = App.nbrLines-1; i >= 0 ; i--) {
@@ -38,6 +39,7 @@ public class Interface {
         System.out.print("\n");
     }
 
+    //fonction permettant de demander la colonne que veut le joueur
     public static String getChoiceOfColumn() {
 
         System.out.println("Choisissez la colonne :");
@@ -68,6 +70,7 @@ public class Interface {
         }
     }
 
+    //Choix du nom.
     public static String getChoiceOfName() {
 
         System.out.println("Veuillez entrer votre nom : ");
@@ -86,14 +89,15 @@ public class Interface {
         return "default_name";
     }
 
+    //Choix de la couleur.
     public static ColorOfPieces getChoiceOfColor() {
 
         ColorOfPieces colorOfTeamPlayer = null;
 
         System.out.println("Veuillez choisir une couleur parmis : ");
 
+        //Affichage du menu de choix de couleur.
         for(int i = 0; i < ColorOfPieces.values().length; i++) {
-
             System.out.println(i + ". " + ColorOfPieces.values()[i]);
         }
 
@@ -112,6 +116,7 @@ public class Interface {
                 return getChoiceOfColor();
             }
 
+            //Vérification de la couleur choisi : si elle est déjà prise, alors relancer la fonction de demande.
             for(Player player : App.players) {
                 if(player.teamColor == colorOfTeamPlayer) {
                     System.out.println("Couleur déjà choisi !");
@@ -130,6 +135,7 @@ public class Interface {
         return colorOfTeamPlayer;
     }
 
+    //Choix de l'adresse IPv4, si elle n'est pas bonne alors le serveur ne se connectera pas.
     public static String getChoiceOfAdress() {
         System.out.println("Veuillez entrer l'adresse (ip) de la partie : ");
 
@@ -147,18 +153,20 @@ public class Interface {
         return "localhost";
     }
 
+    //Fonction de l'état de fin du jeu : Victoire.
     public static void displayEndGameState(Player winner) {
         Interface.display();
         System.out.println("The winner is " + winner.name + " !");
     }
 
+    //Fonction de l'état de fin du jeu : Egalité.
     public static void displayEndGameState() {
         Interface.display();
         System.out.println("Il y a une égalité...");
     }
 
-    /*For the network system*/
-
+    
+    //fonction permettant de demander si la partie se fera en local ou en réseau.
     public static boolean isNetwork() {
         
         System.out.println("Comment voulez-vous jouer ?");
@@ -187,6 +195,7 @@ public class Interface {
         return false;
     }
 
+    //demande de si c'est la même version/implementation du jeu.
     public static boolean isSameImplementation() {
         System.out.println("Jouez-vous sur la meme version/implementation du jeu que votre adversaire ?");
         System.out.println("| 1. oui | 2. non |");
@@ -213,6 +222,7 @@ public class Interface {
         return false;
     }
 
+    //demande de jouer en tant que Serveur ou Client.
     public static String serverOrClient() {
         System.out.println("Comment voulez-vous jouer ?");
         System.out.println("| 1. Créer une partie | 2. Rejoindre une partie |");

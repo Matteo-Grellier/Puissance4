@@ -22,11 +22,12 @@ public class Player {
         this.name = name;
     }
 
+    //fonction récupérant le choix du joueur adverse ou du joueur actuel.
     public String getChoosenColumn() {
 
         String choosenColumn;
         
-        if(App.isNetworking && App.myPlayer.equals(this)) {
+        if(App.isNetworking && App.myPlayer.equals(this)) { //Si on joue en réseau et que c'est notre tour alors
             choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
             
             try {
@@ -35,25 +36,24 @@ public class Player {
                 System.err.println("IOException : " + e.getMessage());
             }
 
-        } else if (App.isNetworking && !App.myPlayer.equals(this)) {
+        } else if (App.isNetworking && !App.myPlayer.equals(this)) { //Si on joue en réseau et que c'est le tour de l'adversaire, alors
             choosenColumn = Communicator.comm.read();
-        } else {
+        } else { //Si on est en local.
             choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
         }
 
         return choosenColumn;
     }
 
+    //fonction ajoutant une pièce dans le tableau (la grille de jeu).
     public void toAddPiece(String choosenColumn) {
-
-        System.out.println(choosenColumn);
 
         int column = Integer.parseInt(String.valueOf(choosenColumn.charAt(5))); // à la sixième valeur (soit 5 ici) il y a le numéro
 
-        if(App.colonnes.get(column).size() < App.nbrLines) {
+        if(App.colonnes.get(column).size() < App.nbrLines) { //Si la ligne choisi est inférieur au nombre de lignes.
             int lineIndex = (App.colonnes.get(column).size());
-            lastPiece = new Piece(this.teamColor, lineIndex, column);
-            App.colonnes.get(column).add(lastPiece);
+            lastPiece = new Piece(this.teamColor, lineIndex, column);   //On créé une nouvelle pièce.
+            App.colonnes.get(column).add(lastPiece);    //On l'ajoute à notre grille.
         } else {
             System.out.println("La colonne est deja pleine, choisissez-en une autre.");
             toAddPiece(getChoosenColumn());
@@ -77,7 +77,7 @@ public class Player {
         }
 
         if(isVictory) {
-            Interface.displayEndGameState(this);
+            Interface.displayEndGameState(this); //On affiche le gagnant.
             return isVictory;
         }
 
@@ -85,38 +85,39 @@ public class Player {
 
         int bufferEquality = 0;
 
+        // vérification pour toutes les colonnes : si la taille de la colonne est égale au nombre maximal (nbr de ligne).
         for (ArrayList<Piece> column : App.colonnes) {
             if (column.size() >= App.nbrLines) {
                 bufferEquality++;
-                
             }
         }
-        if(bufferEquality == App.nbrColumns) {
-            
-            Interface.displayEndGameState();
+
+        if(bufferEquality == App.nbrColumns) { //Si la grille est remplie.        
+            Interface.displayEndGameState(); //On affiche l'égalité.
             return true;
         }
 
-    //     //autre
-         return false;
+        //autre
+        return false;
 
     }
     
-    
+    //Méthode permettant de vérifier le nombre de pièce aligné (de la même couleur), pour une direction donnée.
     public int checkDirection(int dirX, int dirY) {
 
-        int bufferNbrRightPieces = 0;
+        int bufferNbrRightPieces = 0; //Nombre de pièce bonne pour cette vérification.
         
         int x = lastPiece.columnIndex;
         int y = lastPiece.lineIndex;
 
-        for(int i = 0; i <= App.nbrToWin; i++) {
+        for(int i = 0; i <= App.nbrToWin; i++) { //Boucle sur 4 éléments vers une direction donnée.
 
             int posX = x+dirX*i;
             int posY = y+dirY*i;
 
+            //Si on ne dépasse pas la grille (pas de OutOfBand) et que l'on ne dépasse pas la taille de la colonne (en fonction de son remplissage actuel)
             if((posX >= 0) && (posX < App.nbrColumns) && (posY >= 0) && (posY < App.nbrLines) && (App.colonnes.get(posX).size() >= (posY+1))) {
-                if(App.colonnes.get(posX).get(posY).colorOfPiece == this.teamColor) {
+                if(App.colonnes.get(posX).get(posY).colorOfPiece == this.teamColor) { //Si la pièce est de la couleur recherchée.
                     bufferNbrRightPieces++;
                 } else {
                     break;

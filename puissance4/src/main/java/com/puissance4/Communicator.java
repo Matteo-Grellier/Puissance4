@@ -9,12 +9,14 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
+//Les fonctions de cette classe proviennent du cours.
 public class Communicator {
     public static final int BUFFER_LENGTH = 1024;
     SocketChannel socket = null;
 
     static Communicator comm = null;
 
+    //Vérification de si le joueur est le Serveur ou le Client.
     public static boolean isServing() {
 
         String choice = Interface.serverOrClient();
@@ -29,6 +31,7 @@ public class Communicator {
         }
     }
 
+    //fonction permettant de lancer un Serveur. Attente d'une réponse d'un Client.
     public void accept(){
         System.out.println("Waiting for connection on port 4004");
         try {
@@ -43,6 +46,7 @@ public class Communicator {
         
     }
 
+    //fonction permettant à un Client de se connecter à une certain Serveur.
     public void connect(String address) throws IOException{
         System.out.println("Connecting to host...");
         socket = SocketChannel.open();
@@ -50,6 +54,7 @@ public class Communicator {
         System.out.println("Connection established!");
     }
 
+    //fonction permettant d'envoyer du texte en UTF-8 à la personne connectée.
     public void write(String message) throws IOException{
         try{
             ByteBuffer buffer = ByteBuffer.wrap(message.getBytes("UTF-8"));
@@ -63,6 +68,7 @@ public class Communicator {
         
     }
 
+    //fonction permettant de lire le texte en UTF-8 de la personne en face.
     public String read(){
         ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
         try {
@@ -82,6 +88,7 @@ public class Communicator {
         
     }
 
+    //fonction permettant de fermer une connexion.
     public void close(){
         try{
             socket.close();
