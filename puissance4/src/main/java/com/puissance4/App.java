@@ -15,6 +15,7 @@ public class App {
 
     static boolean isNetworking = false; //Pour savoir si on est en réseau.
     static Player myPlayer = null; //l'objet player qui correspond au joueur ayant lancé le programme. (pour le réseau)
+    static String firstRoundState;
 
     static ArrayList<ArrayList<Piece>> colonnes =  new ArrayList<ArrayList<Piece>>();
     static ArrayList<Player> players = new ArrayList<Player>();
@@ -57,6 +58,7 @@ public class App {
                 myPlayer = setPlayers("Joueur serveur (vous)", ColorOfPieces.RED);
             }
 
+            System.out.println("on est deja au randomStartingPlayer");
             randomStartingPlayer(generateRandomNbr());
 
         } else {
@@ -72,10 +74,18 @@ public class App {
                     setPlayers("Joueur serveur", ColorOfPieces.GREEN);
                 }
 
-                String forRandomStarting = Communicator.comm.read();
+                // String firstRoundState = Communicator.comm.read();
 
-                if(!forRandomStarting.equals("your turn") && !forRandomStarting.equals("Your turn")) {
-                    players.get(1).toAddPiece(forRandomStarting);
+                firstRoundState = Communicator.comm.read();
+
+                // if(!firstRoundState.equals("your turn") && !firstRoundState.equals("Your turn")) {
+                //     players.get(1).toAddPiece(firstRoundState);
+                // }
+                
+                if (firstRoundState.equals("your turn")) {
+                    setStartingPlayer(0);
+                } else {
+                    setStartingPlayer(1);
                 }
 
                 // //vérification que c'est bien un nombre
@@ -116,20 +126,27 @@ public class App {
 
     public static void randomStartingPlayer(int randomNbr) {
 
-        Collections.swap(players, randomNbr, 0);
+        setStartingPlayer(randomNbr);
         
         if(isNetworking) {
             try {
                 if(randomNbr == 0) {
                     Communicator.comm.write("your turn");
                 } else {
-                    players.get(1).toAddPiece(players.get(1).getChoosenColumn());
+                    // myPlayer = players.get(randomNbr);
+                    // players.get(randomNbr).toAddPiece(players.get(randomNbr).getChoosenColumn());
                 }
+
+                firstRoundState = "first round finished";
 
             } catch(IOException e) {
                 System.err.println("IOException : " + e.getMessage());
             } 
         }
+    }
+
+    public static void setStartingPlayer(int indexOfPlayer) {
+        Collections.swap(players, indexOfPlayer, 0);
     }
 
     public static int generateRandomNbr() {
@@ -171,7 +188,19 @@ public class App {
                 // players.get(i) ?
                 Interface.display();
                 System.out.println("C'est au tour de " + player.name);
-                player.toAddPiece(player.getChoosenColumn());
+
+                // if(!firstRoundState.equals("your turn") && !firstRoundState.equals("Your turn")) {
+                //     players.get(1).toAddPiece(firstRoundState);
+                //     firstRoundState = "your turn";
+                // } 
+
+                if(!firstRoundState.equals("first round finished")) {
+                    firstRound(player);
+                } else {
+                    player.toAddPiece(player.getChoosenColumn());
+                }
+
+                // player.toAddPiece(player.getChoosenColumn());
 
                 isEndGame = player.endGameTest();
 
@@ -183,6 +212,16 @@ public class App {
             }
         }
         //quand on sort de la boucle, il faut regarder qui a gagné (ou s'il y a égalité)
+    }
+
+    public static void firstRound(Player player) {
+        if(!firstRoundState.equals("your turn") && !firstRoundState.equals("Your turn")) {
+            player.toAddPiece(firstRoundState);
+        } else {
+            player.toAddPiece(player.getChoosenColumn());
+        }
+
+        firstRoundState = "first round finished";
     }
     
 }
