@@ -9,27 +9,17 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
+
 //Les fonctions de cette classe proviennent du cours.
 public class Communicator {
     public static final int BUFFER_LENGTH = 1024;
     SocketChannel socket = null;
 
     static Communicator comm = null;
-
-    //Vérification de si le joueur est le Serveur ou le Client.
-    public static boolean isServing() {
-
-        String choice = Interface.serverOrClient();
-        
-        if(choice.equals("1")) {
-            return true;
-        } else if(choice.equals("2")){
-            return false;
-        } else {
-            System.out.println("Réessayez...");
-            return isServing();
-        }
-    }
 
     //fonction permettant de lancer un Serveur. Attente d'une réponse d'un Client.
     public void accept(){
@@ -42,8 +32,7 @@ public class Communicator {
         }
         catch(IOException e){
             System.err.println("Could not launch server : " + e.getMessage());
-        }
-        
+        }     
     }
 
     //fonction permettant à un Client de se connecter à une certain Serveur.

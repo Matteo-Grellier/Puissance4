@@ -17,32 +17,11 @@ public class Player {
     boolean isWinner = false;
     private Piece lastPiece = null;
 
+    // String choosenColumn;
+
     public Player(String name, ColorOfPieces teamColor) {
         this.teamColor = teamColor;
         this.name = name;
-    }
-
-    //fonction récupérant le choix du joueur adverse ou du joueur actuel.
-    public String getChoosenColumn() {
-
-        String choosenColumn;
-        
-        if(App.isNetworking && App.myPlayer.equals(this)) { //Si on joue en réseau et que c'est notre tour alors
-            choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
-            
-            try {
-                Communicator.comm.write(choosenColumn);
-            } catch(IOException e) {
-                System.err.println("IOException : " + e.getMessage());
-            }
-
-        } else if (App.isNetworking && !App.myPlayer.equals(this)) { //Si on joue en réseau et que c'est le tour de l'adversaire, alors
-            choosenColumn = Communicator.comm.read();
-        } else { //Si on est en local.
-            choosenColumn = Interface.getChoiceOfColumn(); // fonction de l'interface qui return le choix du joueur
-        }
-
-        return choosenColumn;
     }
 
     //fonction ajoutant une pièce dans le tableau (la grille de jeu).
@@ -54,9 +33,16 @@ public class Player {
             int lineIndex = (App.colonnes.get(column).size());
             lastPiece = new Piece(this.teamColor, lineIndex, column);   //On créé une nouvelle pièce.
             App.colonnes.get(column).add(lastPiece);    //On l'ajoute à notre grille.
+
+            if(!endGameTest()) {
+                int nextPlayer = App.turnedPlayer(App.players.indexOf(this)); 
+                Interface.display(App.players.get(nextPlayer));
+            }
+
+
         } else {
             System.out.println("La colonne est deja pleine, choisissez-en une autre.");
-            toAddPiece(getChoosenColumn());
+            Interface.display(this);
         }
     }
 
@@ -77,7 +63,7 @@ public class Player {
         }
 
         if(isVictory) {
-            // Interface.displayEndGameState(this); //On affiche le gagnant.
+            Interface.displayEndGameState(this); //On affiche le gagnant.
             return isVictory;
         }
 
@@ -93,7 +79,7 @@ public class Player {
         }
 
         if(bufferEquality == App.nbrColumns) { //Si la grille est remplie.        
-            // Interface.displayEndGameState(); //On affiche l'égalité.
+            Interface.displayEndGameState(); //On affiche l'égalité.
             return true;
         }
 

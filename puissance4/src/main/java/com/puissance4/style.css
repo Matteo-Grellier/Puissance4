@@ -1,21 +1,21 @@
 .button {
     -fx-border-color: transparent;
     -fx-border-width: 0;
-    -fx-background-radius: 0;
+    -fx-background-radius: 20;
     -fx-background-color: transparent;
 }
 
 .button:focused {
-    -fx-border-color: transparent, black;
+    -fx-border-color: transparent, rgb(71, 38, 38);
     -fx-border-radius: 0, 0;
 }
 
 .button:pressed {
-    -fx-background-color: black;
+    -fx-background-color: rgb(78, 26, 26);
     -fx-text-fill: white;
 }
 
-.button:hover {
+.button:hover { 
     -fx-opacity: 0.5;
-    -fx-background-color: red;
+    -fx-background-color: #c73b5a;
 }
